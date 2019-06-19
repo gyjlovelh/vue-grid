@@ -21,17 +21,35 @@ export default {
     },
     mixins: [pagination],
     data () {
-        return {}
+        return {
+            /** 数据源 */
+            dataSource: [],
+            /** 已选择Id集合 */
+            selectedIds: []
+        }
     },
 
     methods: {
 
         /**
          *
-         * @param event
+         * @param list
          */
-        wafSelectionChange(event) {
-            console.log(event);
+        wafSelectionChange(list) {
+            let selectedRows = [],
+                deselectedRows = [];
+            if (list.length > this.selectedIds.length) {
+                // 勾选
+                selectedRows = list.find(item => !this.selectedIds.find(id => id === item.$id));
+            } else {
+                // 去选
+                deselectedRows = this.selectedIds.find(id => !list.find(item => item.$id === id));
+            }
+
+            console.log({
+                deselectedRows,
+                selectedRows
+            });
             // this.$emit()
         }
     },
@@ -39,7 +57,9 @@ export default {
     watch: {
         gridModel: {
             handler(model) {
-                model.records.forEach(item => {
+                this.dataSource = model.records;
+
+                this.dataSource.forEach(item => {
                     Reflect.defineProperty(item, '$id', {
                         get() {
                             return uuid();

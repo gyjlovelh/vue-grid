@@ -11,11 +11,12 @@
         </div>
 
         <div class="grid-main">
-            <el-table :data="gridModel.records"
+            <el-table :data="dataSource"
                       :height="500"
                       :stripe="false"
                       :size="'small'"
                       :border="false"
+                      :row-key="gridModel.records.$id"
                       @selection-change="wafSelectionChange">
 
                 <!-- <el-table-column type="index" width="60"></el-table-column> -->
