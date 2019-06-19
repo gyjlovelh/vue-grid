@@ -1,5 +1,13 @@
 import Vue from 'vue'
 import App from './App.vue'
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+import './assets/style.scss';
+
+import WafComponent from './components';
+
+Vue.use(ElementUI);
+Vue.use(WafComponent);
 
 Vue.config.productionTip = false
 
