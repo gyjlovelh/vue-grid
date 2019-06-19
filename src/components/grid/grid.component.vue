@@ -15,7 +15,8 @@
                       :height="500"
                       :stripe="false"
                       :size="'small'"
-                      :border="false">
+                      :border="false"
+                      @selection-change="wafSelectionChange">
 
                 <!-- <el-table-column type="index" width="60"></el-table-column> -->
 
