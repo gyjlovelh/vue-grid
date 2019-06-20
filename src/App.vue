@@ -5,6 +5,7 @@
                           :customIndex="customIndex"
                           :selectable="selectable"
                           :selectedKeys="selectedKeys"
+                          :detail-slot="false"
                           gridSelectBy="id"
 
                           @selectedChange="onSelectedChange"
@@ -20,6 +21,14 @@
             <waf-grid-column fixed="right" label="操作">
                 <button>edit</button>
             </waf-grid-column>
+
+            <template v-slot:detail="{row}">
+                <p>this is detail {{row}}</p>
+            </template>
+
+            <template v-slot:toolbar-right>
+                <button>save</button>
+            </template>
         </waf-promise-grid>
     </div>
 </template>
@@ -46,7 +55,7 @@
                 setTimeout(() => {
                     let selectedKeys = [];
                     this.gridModel = {
-                        records: Array(100).fill(0).map((a, index) => {
+                        records: Array(20).fill(0).map((a, index) => {
                             let item = {};
                             item.id = uuid.v4();
                             item.date = '2016-05-02' + Math.floor(Math.random() * 100);
@@ -63,8 +72,6 @@
                     };
                     this.selectedKeys = selectedKeys;
 
-
-
                     resolve({
                         code: 200,
                         data: this.gridModel,
@@ -78,9 +85,6 @@
                     // })
                 }, 1000);
             });
-
-
-
         },
 
         methods: {

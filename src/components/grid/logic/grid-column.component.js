@@ -1,5 +1,4 @@
 
-
 export default {
     props: {
         field: String,
@@ -24,7 +23,17 @@ export default {
             default: true
         },
 
-        fixed: String
+        fixed: String,
+
+        hidden: Boolean,
+
+        /**
+         * 是否可以改变排列位置位置
+         */
+        reorderable: {
+            type: Boolean,
+            default: true
+        }
     },
 
     data() {

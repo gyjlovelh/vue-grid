@@ -17,6 +17,9 @@ export default {
             type: Function,
             default: i => i
         },
+
+        detailSlot: Boolean,
+
         filterable: Boolean,
         resizable: Boolean,
         reorderable: Boolean
@@ -31,6 +34,8 @@ export default {
 
     created() {
         console.log('selectable', this.wafSelectable);
+
+        console.log('$slot', this.$slots)
     },
 
     methods: {

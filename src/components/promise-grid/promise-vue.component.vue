@@ -14,6 +14,14 @@
 
         <template v-slot="{data}">
             <waf-grid :gridModel="data" v-bind="$attrs" v-on="$listeners">
+                <template v-slot:detail="{row}">
+                    <slot name="detail" :row="row"></slot>
+                </template>
+
+                <template v-slot:toolbar-left><slot name="toolbar-left"></slot></template>
+
+                <template v-slot:toolbar-right><slot name="toolbar-right"></slot></template>
+
                 <slot></slot>
             </waf-grid>
         </template>

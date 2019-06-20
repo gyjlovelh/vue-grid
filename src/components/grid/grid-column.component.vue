@@ -1,6 +1,6 @@
 <template>
 
-    <el-table-column :prop="field"
+    <el-table-column v-if="!hidden" :prop="field"
                      :label="label"
                      :width="width || 250"
 

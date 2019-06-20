@@ -39,7 +39,7 @@ export default {
 
     data() {
         return {
-            loaded: true,
+            pending: false,
             wafSelectable: defaultSelection,
             /** 已选择Id集合 */
             selectedList: []
@@ -52,7 +52,7 @@ export default {
          * @param list 当前页勾选集合
          */
         wafSelectionChange(list) {
-            if (!this.loaded) {
+            if (this.pending) {
                 return;
             }
             let selectedRows = [], deselectedRows = [], totalSelectedRows = [];
@@ -110,7 +110,7 @@ export default {
                 if (!this.gridSelectBy) {
                     throw new Error('gridSelectBy cannot be ' + this.gridSelectBy);
                 } else {
-                    this.loaded = false;
+                    this.pending = true;
                     setTimeout(() => {
                         this.$refs.wafGridComponent.doLayout();
                         // todo 此处由于js机制致使初始化勾选状态不生效
@@ -119,7 +119,21 @@ export default {
                             this.$refs.wafGridComponent.toggleRowSelection(row, true);
                         });
                         setTimeout(() => {
-                            this.loaded = true;
+                            this.pending = false;
+                            this.selectedList = this.dataSource.filter(item => keys.includes(item[this.gridSelectBy]));
+
+                            let columnInfo = [];
+                            this.$refs.wafGridComponent.$children.forEach((child, index) => {
+                                if (child.reorderable) {
+                                    // columnInfo.push({
+                                    //     index,
+                                    //     component: child
+                                    // })
+                                    columnInfo.push(child);
+                                }
+                            });
+
+                            console.log(columnInfo);
                         }, 100);
                     }, 200);
 

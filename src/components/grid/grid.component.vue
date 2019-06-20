@@ -2,10 +2,14 @@
     <div class="grid-wrap">
         <div class="grid-header-toolbar">
             <div class="grid-toolbar-left">
-                <a class="selected-rows-num" href="">已选中数据 51 条</a>
+                <a class="selected-rows-num" href="">已选中数据 {{selectedList.length}} 条</a>
+
+                <slot name="toolbar-left"></slot>
             </div>
 
             <div class="grid-toolbar-right">
+
+                <slot name="toolbar-right"></slot>
 
                 <el-tooltip effect="light" content="导出" placement="top">
                     <a class="icon-item" href=""><i class="el-icon-picture"></i></a>
@@ -35,8 +39,8 @@
                       @sort-change="wafSortChange">
 
                 <!-- 展开列 -->
-                <waf-grid-detail-column v-slot="{row}">
-                    <slot name="detail"></slot>
+                <waf-grid-detail-column v-if="detailSlot" v-slot="{row}">
+                    <slot name="detail" :row="row"></slot>
                 </waf-grid-detail-column>
                 <!-- 勾选框 -->
                 <waf-grid-checkbox-column v-if="wafSelectable.enabled"></waf-grid-checkbox-column>
