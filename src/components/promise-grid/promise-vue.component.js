@@ -2,6 +2,7 @@
 export default {
     name: 'promise-vue.component',
     props: ['promise'],
+    inheritAttrs: true,
     data() {
         return {
             gridModel: null

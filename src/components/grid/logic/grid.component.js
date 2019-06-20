@@ -1,4 +1,7 @@
 import pagination from '../mixins/pagination';
+import sort from '../mixins/sort';
+import selection from '../mixins/selection';
+
 import uuid from 'uuid';
 
 export default {
@@ -9,48 +12,46 @@ export default {
                 return model && Array.isArray(model.records) && typeof model.total === 'number';
             }
         },
-
+        showIndex: Boolean,
+        customIndex: {
+            type: Function,
+            default: i => i
+        },
         filterable: Boolean,
-
-        sortable: Boolean,
-
-        selectable: Boolean,
-
         resizable: Boolean,
         reorderable: Boolean
     },
-    mixins: [pagination],
+    mixins: [pagination, sort, selection],
     data () {
         return {
             /** 数据源 */
-            dataSource: [],
-            /** 已选择Id集合 */
-            selectedIds: []
+            dataSource: []
         }
+    },
+
+    created() {
+        console.log('selectable', this.wafSelectable);
     },
 
     methods: {
 
-        /**
-         *
-         * @param list
-         */
-        wafSelectionChange(list) {
-            let selectedRows = [],
-                deselectedRows = [];
-            if (list.length > this.selectedIds.length) {
-                // 勾选
-                selectedRows = list.find(item => !this.selectedIds.find(id => id === item.$id));
-            } else {
-                // 去选
-                deselectedRows = this.selectedIds.find(id => !list.find(item => item.$id === id));
-            }
-
-            console.log({
-                deselectedRows,
-                selectedRows
+        publishDataSourceChange() {
+            this.$emit('dataSourceChange', {
+                pager: {
+                    pageSize: this.pageSize,
+                    pageNum: this.pageNum,
+                    skip: this.skip
+                },
+                filters: [],
+                sort: this.sort
             });
-            // this.$emit()
+        },
+
+        wafRowClick(row) {
+            if (!this.wafSelectable.checkboxOnly) {
+                // 联动checkbox
+                this.$refs.wafGridComponent.toggleRowSelection(row, !this.selectedList.find(item => item.$id === row.$id));
+            }
         }
     },
 
@@ -60,12 +61,17 @@ export default {
                 this.dataSource = model.records;
 
                 this.dataSource.forEach(item => {
-                    Reflect.defineProperty(item, '$id', {
-                        get() {
-                            return uuid();
-                        },
-                        enumerable: false
-                    });
+                    item.$id = uuid();
+                    // Reflect.defineProperty(item, '$id', {
+                    //     get() {
+                    //         return uuid();
+                    //     },
+                    //     enumerable: false
+                    // });
+
+                    // Reflect.defineProperty(item, '$selected', {
+                    //     enumerable: false
+                    // });
                 })
             },
             immediate: true

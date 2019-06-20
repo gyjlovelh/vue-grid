@@ -5,11 +5,11 @@
                      :width="width || 250"
 
                      :filterable="filterable"
-                     :resizable="resizable"
+                     :resizable="!fixed && resizable"
                      :fixed="fixed"
-                     :sortable="sortable">
+                     :sortable="!fixed && columnSortable">
         <slot></slot>
-    
+
     </el-table-column>
 </template>
 

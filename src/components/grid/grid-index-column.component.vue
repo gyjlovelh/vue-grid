@@ -1,5 +1,5 @@
 <template>
-    <el-table-column type="index" :label="label"></el-table-column>
+    <el-table-column type="index" :width="80" :index="customIndex" :label="label"></el-table-column>
 </template>
 
 <script>
@@ -9,6 +9,10 @@
             label: {
                 type: String,
                 default: '序号'
+            },
+            customIndex: {
+                type: Function,
+                default: i => i
             }
         }
     }
